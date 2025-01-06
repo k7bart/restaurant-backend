@@ -16,7 +16,7 @@ const eventsService = {
   },
 
   getEventByName: async (eventName) => {
-    const event = await Event.find({ name: eventName });
+    const event = await Event.findOne({ name: eventName });
 
     return event;
   },
