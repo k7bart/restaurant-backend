@@ -2,8 +2,14 @@ const express = require("express");
 
 const app = express();
 
-const port = 3000;
+const serverSetup = require("./src/initialization/serverSetup");
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+const start = async () => {
+  try {
+    await serverSetup(app);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+start();
