@@ -23,7 +23,38 @@ const errors = {
     code: "UNAUTHORIZED",
     message: "The requested URL requires user authorization.",
   },
+
   FIELD_CANNOT_BE_EMPTY: (field) => `The ${field} field cannot be empty.`,
+
+  FIELD_CANNOT_BE_LONGER: (field, quantity) =>
+    `The ${field} cannot be longer than ${quantity} symbol.`,
+
+  FIELD_CANNOT_BE_SHORTER: (field, quantity) =>
+    `The ${field} cannot be shorter than ${quantity}.`,
+
+  FIELD_IS_NOT_OF_PROPER_FORMAT: (field) => validationErrors[field],
+
+  NAME_FIELD_IS_NOT_OF_PROPER_FORMAT: (field) => ({
+    code: "NAME_NOT_VALID",
+    message: `The ${field} can contain alphabetic characters only.`,
+  }),
+};
+
+const validationErrors = {
+  firstName: errors.NAME_FIELD_IS_NOT_OF_PROPER_FORMAT("firstName"),
+
+  lastName: errors.NAME_FIELD_IS_NOT_OF_PROPER_FORMAT("lastName"),
+
+  phone: {
+    code: "PHONE_NOT_VAlID",
+    message: "The phone number is not valid.",
+  },
+
+  email: {
+    code: "EMAIL_NOT_VALID",
+    message:
+      "Email should be of the following format: “local-part@domain.com”.",
+  },
 };
 
 module.exports = errors;
