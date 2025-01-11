@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const { isValidPhoneNumber } = require("libphonenumber-js");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const {
   FIELD_CANNOT_BE_EMPTY,
@@ -9,19 +10,35 @@ const {
   FIELD_IS_NOT_OF_PROPER_FORMAT,
 } = require("../../consts/errors");
 
+const {
+  lengths: { MAX_NAME_LENGTH, MIN_NAME_LENGTH, MIN_PASSWORD_LENGTH },
+} = require("../../consts/validation");
+
 const userSchema = new Schema({
   firstName: {
     type: String,
     required: [true, FIELD_CANNOT_BE_EMPTY("first name")],
-    minLength: [1, FIELD_CANNOT_BE_SHORTER("first name", 1)],
-    maxLength: [30, FIELD_CANNOT_BE_LONGER("first name", 30)],
+    minLength: [
+      MIN_NAME_LENGTH,
+      FIELD_CANNOT_BE_SHORTER("first name", MIN_NAME_LENGTH),
+    ],
+    maxLength: [
+      MAX_NAME_LENGTH,
+      FIELD_CANNOT_BE_LONGER("first name", MAX_NAME_LENGTH),
+    ],
     validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("firstName")],
   },
 
   lastName: {
     type: String,
-    minLength: [1, FIELD_CANNOT_BE_SHORTER("last name", 1)],
-    maxLength: [30, FIELD_CANNOT_BE_LONGER("last name", 30)],
+    minLength: [
+      MIN_NAME_LENGTH,
+      FIELD_CANNOT_BE_SHORTER("last name", MIN_NAME_LENGTH),
+    ],
+    maxLength: [
+      MAX_NAME_LENGTH,
+      FIELD_CANNOT_BE_LONGER("last name", MAX_NAME_LENGTH),
+    ],
     validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("lastName")],
   },
 
@@ -41,9 +58,20 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, FIELD_CANNOT_BE_EMPTY("password")],
-    minLength: [8, FIELD_CANNOT_BE_SHORTER("password", 8)],
+    minLength: [
+      MIN_PASSWORD_LENGTH,
+      FIELD_CANNOT_BE_SHORTER("password", MIN_PASSWORD_LENGTH),
+    ],
     select: false,
   },
+});
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  this.password = await bcrypt.hash(this.password, 12);
+
+  next();
 });
 
 userSchema.index({ email: 1 }, { unique: true }); // database-level uniqueness
