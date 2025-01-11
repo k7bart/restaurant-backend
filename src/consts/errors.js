@@ -1,4 +1,9 @@
 const errors = {
+  ALREADY_REGISTERED: {
+    code: "ALREADY_REGISTERED",
+    message: "User with the specified email already exists.",
+  },
+
   BAD_REQUEST: {
     code: "BAD_REQUEST",
     message:
