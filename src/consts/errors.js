@@ -13,6 +13,12 @@ const errors = {
     code: "FORBIDDEN",
     message: "You do not have permission to perform this action.",
   },
+
+  INCORRECT_CREDENTIALS: {
+    code: "INCORRECT_CREDENTIALS",
+    message: "Incorrect email or password.",
+  },
+
   INTERNAL_SERVER_ERROR: {
     code: "INTERNAL_SERVER_ERROR",
   },
