@@ -4,7 +4,7 @@ const {
   FORBIDDEN,
   BAD_REQUEST,
   INTERNAL_SERVER_ERROR,
-} = require("~/consts/errors");
+} = require("../consts/errors");
 
 const createError = (status, errorInfo) => {
   const err = new Error(errorInfo.message);
