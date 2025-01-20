@@ -23,6 +23,12 @@ const userService = {
 
     return user || null;
   },
+
+  getUserByEmailWithPassword: async (email) => {
+    const user = await User.findOne({ email }).select("+password");
+
+    return user || null;
+  },
 };
 
 module.exports = userService;
