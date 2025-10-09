@@ -1,5 +1,6 @@
 const User = require("./user.model");
 const { ALREADY_REGISTERED } = require("../../consts/errors");
+const { createError } = require("../../utils/errorsHelpers");
 
 const userService = {
   createUser: async (firstName, lastName, phone, email, password) => {

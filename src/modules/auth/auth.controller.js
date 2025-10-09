@@ -24,7 +24,10 @@ const login = async (req, res) => {
 
   setTokensAsCookies(res, tokens);
 
-  return res.status(200).json({ message: "Login successful" });
+  return res.status(200).json({
+    status: "success",
+    message: "Login successful",
+  });
 };
 
 const signup = async (req, res) => {

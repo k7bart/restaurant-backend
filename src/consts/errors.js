@@ -57,7 +57,7 @@ const validationErrors = {
   lastName: errors.NAME_FIELD_IS_NOT_OF_PROPER_FORMAT("lastName"),
 
   phone: {
-    code: "PHONE_NOT_VAlID",
+    code: "PHONE_NOT_VALID",
     message: "The phone number is not valid.",
   },
 
