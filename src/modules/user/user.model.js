@@ -74,11 +74,9 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.index({ email: 1 }, { unique: true }); // database-level uniqueness
-
 userSchema.methods.comparePasswords = async function (
   candidatePassword,
-  userPassword
+  userPassword,
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
 };

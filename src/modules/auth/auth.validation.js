@@ -68,16 +68,16 @@ const signupSchema = {
     in: ["body"],
     isString: true,
     notEmpty: {
-      errorMessage: FIELD_CANNOT_BE_EMPTY("firstName"),
+      errorMessage: FIELD_CANNOT_BE_EMPTY("lastName"),
       bail: true,
     },
     isLength: {
       options: { min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH },
-      errorMessage: `First name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
+      errorMessage: `Last name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
       bail: true,
     },
     isAlpha: {
-      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("firstName"),
+      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("lastName"),
       bail: true,
     },
   },
