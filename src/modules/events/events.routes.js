@@ -4,6 +4,6 @@ const eventsController = require("./events.controller");
 
 router.get("/", eventsController.getEvents);
 router.get("/id/:id", validateIdChain(), eventsController.getEventById);
-router.get("/name/:name", eventsController.getEventByName);
+router.get("/pathName/:pathName", eventsController.getEventByPathName);
 
 module.exports = router;

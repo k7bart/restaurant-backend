@@ -13,9 +13,9 @@ const getEventById = async (req, res) => {
   res.status(200).json(event);
 };
 
-const getEventByName = async (req, res) => {
-  const { name } = req.params;
-  const event = await eventsService.getEventByName(name);
+const getEventByPathName = async (req, res) => {
+  const { pathName } = req.params;
+  const event = await eventsService.getEventByPathName(pathName);
 
   res.status(200).json(event);
 };
@@ -23,5 +23,5 @@ const getEventByName = async (req, res) => {
 module.exports = {
   getEvents,
   getEventById,
-  getEventByName,
+  getEventByPathName,
 };

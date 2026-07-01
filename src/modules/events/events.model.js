@@ -2,10 +2,10 @@ const { Schema, model } = require("mongoose");
 const { FIELD_CANNOT_BE_EMPTY } = require("../../consts/errors");
 
 const eventSchema = new Schema({
-  name: {
+  pathName: {
     type: String,
     unique: true,
-    required: [true, FIELD_CANNOT_BE_EMPTY("name")],
+    required: [true, FIELD_CANNOT_BE_EMPTY("pathName")],
   },
   ageLimit: {
     type: Number,

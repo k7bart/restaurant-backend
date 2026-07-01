@@ -1,24 +1,38 @@
 const Event = require("./events.model");
+const { createNotFoundError } = require("../../utils/errorsHelpers");
+
+const normalizeEvent = ({ name, pathName, ...event }) => ({
+  ...event,
+  pathName: pathName ?? name,
+});
 
 const eventsService = {
   getEvents: async () => {
-    return Event.find();
+    const events = await Event.find().lean();
+
+    return events.map(normalizeEvent);
   },
 
   getEventById: async (eventId) => {
-    const event = await Event.findById(eventId);
+    const event = await Event.findById(eventId).lean();
 
     if (!event) {
       throw createNotFoundError();
     }
 
-    return event;
+    return normalizeEvent(event);
   },
 
-  getEventByName: async (eventName) => {
-    const event = await Event.findOne({ name: eventName });
+  getEventByPathName: async (pathName) => {
+    const event = await Event.findOne({
+      $or: [{ pathName }, { name: pathName }],
+    }).lean();
 
-    return event;
+    if (!event) {
+      throw createNotFoundError();
+    }
+
+    return normalizeEvent(event);
   },
 };
 
