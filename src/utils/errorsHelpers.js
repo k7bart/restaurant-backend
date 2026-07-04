@@ -3,6 +3,8 @@ const {
   NOT_FOUND,
   FORBIDDEN,
   BAD_REQUEST,
+  VALIDATION_ERROR,
+  TOO_MANY_REQUESTS,
   INTERNAL_SERVER_ERROR,
 } = require("../consts/errors");
 
@@ -11,6 +13,16 @@ const createError = (status, errorInfo) => {
   err.status = status;
   err.code = errorInfo.code;
 
+  return err;
+};
+
+const createBadRequestError = () => {
+  return createError(400, BAD_REQUEST);
+};
+
+const createValidationError = (errors) => {
+  const err = createError(400, VALIDATION_ERROR);
+  err.errors = errors;
   return err;
 };
 
@@ -26,8 +38,8 @@ const createNotFoundError = () => {
   return createError(404, NOT_FOUND);
 };
 
-const createBadRequestError = () => {
-  return createError(400, BAD_REQUEST);
+const createTooManyRequestsError = () => {
+  return createError(429, TOO_MANY_REQUESTS);
 };
 
 const createServerError = () => {
@@ -41,4 +53,6 @@ module.exports = {
   createForbiddenError,
   createBadRequestError,
   createServerError,
+  createValidationError,
+  createTooManyRequestsError,
 };
