@@ -5,6 +5,9 @@ const lengths = {
   MAX_NAME_LENGTH: 30,
 };
 
+const DEFAULT_PHONE_COUNTRY = "UA";
+
 module.exports = {
   lengths,
+  DEFAULT_PHONE_COUNTRY,
 };
