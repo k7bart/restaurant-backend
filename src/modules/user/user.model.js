@@ -1,8 +1,7 @@
 const { Schema, model } = require("mongoose");
-const { isValidPhoneNumber } = require("libphonenumber-js");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const { normalizePhone } = require("../../utils/normalizePhone");
+const { normalizePhone, isValidPhone } = require("../../utils/normalizePhone");
 
 const {
   FIELD_CANNOT_BE_EMPTY,
@@ -42,24 +41,21 @@ const userSchema = new Schema({
 
   lastName: {
     type: String,
-    lastName: {
-      type: String,
-      minLength: [
-        MIN_NAME_LENGTH,
-        FIELD_CANNOT_BE_SHORTER("last name", MIN_NAME_LENGTH),
-      ],
-      maxLength: [
-        MAX_NAME_LENGTH,
-        FIELD_CANNOT_BE_LONGER("last name", MAX_NAME_LENGTH),
-      ],
-      validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("lastName")],
-    },
+    minLength: [
+      MIN_NAME_LENGTH,
+      FIELD_CANNOT_BE_SHORTER("last name", MIN_NAME_LENGTH),
+    ],
+    maxLength: [
+      MAX_NAME_LENGTH,
+      FIELD_CANNOT_BE_LONGER("last name", MAX_NAME_LENGTH),
+    ],
+    validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("lastName")],
   },
 
   phone: {
     type: String,
     unique: true,
-    validate: [isValidPhoneNumber, FIELD_IS_NOT_OF_PROPER_FORMAT("phone")],
+    validate: [isValidPhone, FIELD_IS_NOT_OF_PROPER_FORMAT("phone")],
   },
 
   email: {
