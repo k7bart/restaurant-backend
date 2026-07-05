@@ -29,7 +29,7 @@ const login = async (req, res) => {
 
   const { user, tokens } = await authService.login(phone, password);
 
-  setTokensAsCookies(res, tokens, { rememberMe: rememberMe === true });
+  setTokensAsCookies(res, tokens, { rememberMe });
 
   return res.status(200).json({
     status: "success",
@@ -49,7 +49,7 @@ const signup = async (req, res) => {
     password,
   );
 
-  setTokensAsCookies(res, tokens, { rememberMe: rememberMe === true });
+  setTokensAsCookies(res, tokens, { rememberMe });
 
   res.status(201).json({
     status: "success",
