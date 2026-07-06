@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config({ path: ".env.local" });
 
 const initialization = require("./initialization");
+const syncModelIndexes = require("./syncModelIndexes");
 
 const {
   config: { MONGODB_URL, MONGODB_PASSWORD, SERVER_PORT },
@@ -12,10 +13,10 @@ const {
 const databaseInitialization = async () => {
   const DB = MONGODB_URL.replace("<PASSWORD>", MONGODB_PASSWORD);
 
-  await mongoose
-    .connect(DB)
-    .then(() => console.log("DB connection successful!"))
-    .catch((err) => console.error("DB connection error:", err));
+  await mongoose.connect(DB, { autoIndex: false });
+  console.log("DB connection successful!");
+
+  await syncModelIndexes();
 };
 
 const serverSetup = async (app) => {

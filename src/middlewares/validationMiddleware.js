@@ -1,13 +1,21 @@
 const { checkSchema, validationResult } = require("express-validator");
+const { createValidationError } = require("../utils/errorsHelpers");
 
 const validationMiddleware = (schema) => {
   return [
     checkSchema(schema),
 
-    (req, res, next) => {
+    (req, _res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return next(
+          createValidationError(
+            errors.array().map((err) => ({
+              field: err.path,
+              message: err.msg,
+            })),
+          ),
+        );
       }
       next();
     },

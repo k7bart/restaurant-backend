@@ -1,13 +1,22 @@
 const errors = {
   ALREADY_REGISTERED: {
     code: "ALREADY_REGISTERED",
-    message: "User with the specified email already exists.",
+    message: "User with the specified phone number already exists.",
   },
 
   BAD_REQUEST: {
     code: "BAD_REQUEST",
     message:
       "The request could not be processed due to invalid or missing parameters.",
+  },
+  VALIDATION_ERROR: {
+    code: "VALIDATION_ERROR",
+    message:
+      "The request could not be processed due to invalid or missing parameters.",
+  },
+  TOO_MANY_REQUESTS: {
+    code: "TOO_MANY_REQUESTS",
+    message: "Too many attempts. Please try again later.",
   },
   FORBIDDEN: {
     code: "FORBIDDEN",
