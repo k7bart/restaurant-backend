@@ -4,7 +4,7 @@ const { config } = require("../../config");
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: config.IS_PRODUCTION,
-  sameSite: "strict",
+  sameSite: config.IS_PRODUCTION ? "none" : "strict",
   path: "/",
 };
 
