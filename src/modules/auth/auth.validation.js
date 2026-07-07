@@ -1,48 +1,13 @@
 const {
-  lengths: {
-    MAX_NAME_LENGTH,
-    MIN_NAME_LENGTH,
-    MIN_PASSWORD_LENGTH,
-    MAX_PASSWORD_LENGTH,
-  },
+  lengths: { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH },
 } = require("../../consts/validation");
-
+const { FIELD_CANNOT_BE_EMPTY } = require("../../consts/errors");
 const {
-  FIELD_CANNOT_BE_EMPTY,
-  FIELD_IS_NOT_OF_PROPER_FORMAT,
-} = require("../../consts/errors");
-
-const { normalizePhone, isValidPhone } = require("../../utils/normalizePhone");
-
-const phoneValidation = {
-  in: ["body"],
-  isString: true,
-  trim: true,
-  notEmpty: {
-    errorMessage: FIELD_CANNOT_BE_EMPTY("phone"),
-    bail: true,
-  },
-  customSanitizer: {
-    options: (value) => normalizePhone(value),
-  },
-  custom: {
-    options: (value) => isValidPhone(value),
-    errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("phone"),
-  },
-};
-
-const optionalEmail = {
-  in: ["body"],
-  optional: { options: { values: "falsy" } },
-  isEmail: {
-    errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("email"),
-    bail: true,
-  },
-  isLowercase: {
-    errorMessage: "Email must be in lowercase.",
-    bail: true,
-  },
-};
+  phoneValidation,
+  emailValidation,
+  firstNameValidation,
+  lastNameValidation,
+} = require("../../utils/validationChains");
 
 const password = {
   in: ["body"],
@@ -62,7 +27,7 @@ const password = {
 };
 
 const loginSchema = {
-  phone: phoneValidation,
+  phone: phoneValidation(),
   password,
   rememberMe: {
     in: ["body"],
@@ -72,44 +37,11 @@ const loginSchema = {
 };
 
 const signupSchema = {
-  firstName: {
-    in: ["body"],
-    isString: true,
-    notEmpty: {
-      errorMessage: FIELD_CANNOT_BE_EMPTY("firstName"),
-      bail: true,
-    },
-    isLength: {
-      options: { min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH },
-      errorMessage: `First name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
-      bail: true,
-    },
-    isAlpha: {
-      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("firstName"),
-      bail: true,
-    },
-  },
-
-  lastName: {
-    in: ["body"],
-    isString: true,
-    optional: { options: { values: "falsy" } },
-    isLength: {
-      options: { min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH },
-      errorMessage: `Last name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
-      bail: true,
-    },
-    isAlpha: {
-      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("lastName"),
-      bail: true,
-    },
-  },
-
-  phone: phoneValidation,
-
-  email: optionalEmail,
+  firstName: firstNameValidation(),
+  lastName: lastNameValidation(),
+  phone: phoneValidation(),
+  email: emailValidation(),
   password,
-
   rememberMe: {
     in: ["body"],
     optional: true,
@@ -117,62 +49,11 @@ const signupSchema = {
   },
 };
 
-const optionalPhoneValidation = {
-  in: ["body"],
-  optional: true,
-  isString: true,
-  trim: true,
-  notEmpty: {
-    errorMessage: FIELD_CANNOT_BE_EMPTY("phone"),
-    bail: true,
-  },
-  customSanitizer: {
-    options: (value) => normalizePhone(value),
-  },
-  custom: {
-    options: (value) => isValidPhone(value),
-    errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("phone"),
-  },
-};
-
 const updateProfileSchema = {
-  firstName: {
-    in: ["body"],
-    optional: true,
-    isString: true,
-    notEmpty: {
-      errorMessage: FIELD_CANNOT_BE_EMPTY("firstName"),
-      bail: true,
-    },
-    isLength: {
-      options: { min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH },
-      errorMessage: `First name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
-      bail: true,
-    },
-    isAlpha: {
-      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("firstName"),
-      bail: true,
-    },
-  },
-
-  lastName: {
-    in: ["body"],
-    isString: true,
-    optional: { options: { values: "falsy" } },
-    isLength: {
-      options: { min: MIN_NAME_LENGTH, max: MAX_NAME_LENGTH },
-      errorMessage: `Last name must be between ${MIN_NAME_LENGTH} and ${MAX_NAME_LENGTH} characters.`,
-      bail: true,
-    },
-    isAlpha: {
-      errorMessage: FIELD_IS_NOT_OF_PROPER_FORMAT("lastName"),
-      bail: true,
-    },
-  },
-
-  phone: optionalPhoneValidation,
-
-  email: optionalEmail,
+  firstName: firstNameValidation("firstName", true),
+  lastName: lastNameValidation(),
+  phone: phoneValidation("phone", true),
+  email: emailValidation(),
 };
 
 module.exports = {

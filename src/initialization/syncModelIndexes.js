@@ -1,8 +1,9 @@
 const Event = require("../modules/events/events.model");
+const Reservation = require("../modules/reservations/reservations.model");
 const RefreshToken = require("../modules/token/refreshToken.model");
 const User = require("../modules/user/user.model");
 
-const MODELS = [User, RefreshToken, Event];
+const MODELS = [User, RefreshToken, Event, Reservation];
 
 const syncModelIndexes = async () => {
   for (const model of MODELS) {
