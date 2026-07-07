@@ -9,6 +9,7 @@ const errors = {
     message:
       "The request could not be processed due to invalid or missing parameters.",
   },
+
   VALIDATION_ERROR: {
     code: "VALIDATION_ERROR",
     message:
@@ -18,6 +19,7 @@ const errors = {
     code: "TOO_MANY_REQUESTS",
     message: "Too many attempts. Please try again later.",
   },
+
   FORBIDDEN: {
     code: "FORBIDDEN",
     message: "You do not have permission to perform this action.",
@@ -35,14 +37,22 @@ const errors = {
     code: "INVALID_ID",
     message: "ID is invalid.",
   },
+
   NOT_FOUND: {
     code: "NOT_FOUND",
     message: "The requested URL was not found.",
   },
+
   UNAUTHORIZED: {
     code: "UNAUTHORIZED",
     message: "The requested URL requires user authorization.",
   },
+
+  FIELD_CANNOT_BE_HIGHER: (field, quantity) =>
+    `The ${field} cannot be higher than ${quantity}.`,
+
+  FIELD_CANNOT_BE_LOWER: (field, quantity) =>
+    `The ${field} cannot be lower than ${quantity}.`,
 
   FIELD_CANNOT_BE_EMPTY: (field) => `The ${field} field cannot be empty.`,
 
