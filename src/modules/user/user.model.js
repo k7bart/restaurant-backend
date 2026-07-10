@@ -1,23 +1,14 @@
 const { Schema, model } = require("mongoose");
-const validator = require("validator");
 const bcrypt = require("bcryptjs");
-const { normalizePhone, isValidPhone } = require("../../utils/normalizePhone");
+const { normalizePhone } = require("../../utils/normalizePhone");
 
 const {
-  FIELD_CANNOT_BE_EMPTY,
-  FIELD_CANNOT_BE_SHORTER,
-  FIELD_CANNOT_BE_LONGER,
-  FIELD_IS_NOT_OF_PROPER_FORMAT,
-} = require("../../consts/errors");
-
-const {
-  lengths: {
-    MAX_NAME_LENGTH,
-    MIN_NAME_LENGTH,
-    MIN_PASSWORD_LENGTH,
-    MAX_PASSWORD_LENGTH,
-  },
-} = require("../../consts/validation");
+  firstNameSchema,
+  lastNameSchema,
+  phoneSchema,
+  emailSchema,
+  passwordSchema,
+} = require("../../utils/modelSchemas");
 
 const userSchema = new Schema({
   id: {
@@ -25,44 +16,13 @@ const userSchema = new Schema({
     unique: true,
   },
 
-  firstName: {
-    type: String,
-    required: [true, FIELD_CANNOT_BE_EMPTY("first name")],
-    minLength: [
-      MIN_NAME_LENGTH,
-      FIELD_CANNOT_BE_SHORTER("first name", MIN_NAME_LENGTH),
-    ],
-    maxLength: [
-      MAX_NAME_LENGTH,
-      FIELD_CANNOT_BE_LONGER("first name", MAX_NAME_LENGTH),
-    ],
-    validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("firstName")],
-  },
+  firstName: firstNameSchema(),
 
-  lastName: {
-    type: String,
-    minLength: [
-      MIN_NAME_LENGTH,
-      FIELD_CANNOT_BE_SHORTER("last name", MIN_NAME_LENGTH),
-    ],
-    maxLength: [
-      MAX_NAME_LENGTH,
-      FIELD_CANNOT_BE_LONGER("last name", MAX_NAME_LENGTH),
-    ],
-    validate: [validator.isAlpha, FIELD_IS_NOT_OF_PROPER_FORMAT("lastName")],
-  },
+  lastName: lastNameSchema(),
 
-  phone: {
-    type: String,
-    unique: true,
-    validate: [isValidPhone, FIELD_IS_NOT_OF_PROPER_FORMAT("phone")],
-  },
+  phone: phoneSchema(),
 
-  email: {
-    type: String,
-    lowercase: true,
-    validate: [validator.isEmail, FIELD_IS_NOT_OF_PROPER_FORMAT("email")],
-  },
+  email: emailSchema(),
 
   referralLink: {
     type: String,
@@ -72,19 +32,7 @@ const userSchema = new Schema({
     type: String,
   },
 
-  password: {
-    type: String,
-    required: [true, FIELD_CANNOT_BE_EMPTY("password")],
-    minLength: [
-      MIN_PASSWORD_LENGTH,
-      FIELD_CANNOT_BE_SHORTER("password", MIN_PASSWORD_LENGTH),
-    ],
-    maxLength: [
-      MAX_PASSWORD_LENGTH,
-      FIELD_CANNOT_BE_LONGER("password", MAX_PASSWORD_LENGTH),
-    ],
-    select: false,
-  },
+  password: passwordSchema(),
 });
 
 userSchema.pre("save", async function (next) {

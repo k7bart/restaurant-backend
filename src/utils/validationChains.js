@@ -1,11 +1,17 @@
 const { param } = require("express-validator");
 const {
-  lengths: { MAX_NAME_LENGTH, MIN_NAME_LENGTH },
+  lengths: {
+    MAX_NAME_LENGTH,
+    MIN_NAME_LENGTH,
+    MAX_PROMO_CODE_LENGTH,
+    MAX_COMMENT_LENGTH,
+  },
 } = require("../consts/validation");
 const {
   FIELD_CANNOT_BE_EMPTY,
   FIELD_IS_NOT_OF_PROPER_FORMAT,
   INVALID_ID,
+  FIELD_CANNOT_BE_LONGER,
 } = require("../consts/errors");
 const { normalizePhone, isValidPhone } = require("./normalizePhone");
 
@@ -82,10 +88,34 @@ const lastNameValidation = (field = "lastName") => ({
 const validateIdChain = () =>
   param("id").isMongoId().withMessage(INVALID_ID.message);
 
+const promoCodeValidation = (field = "promoCode") => ({
+  in: ["body"],
+  isString: true,
+  trim: true,
+  maxLength: {
+    options: { max: MAX_PROMO_CODE_LENGTH },
+    errorMessage: FIELD_CANNOT_BE_LONGER(field, MAX_PROMO_CODE_LENGTH),
+    bail: true,
+  },
+});
+
+const commentValidation = (field = "comment") => ({
+  in: ["body"],
+  optional: { options: { values: "falsy" } },
+  isString: true,
+  trim: true,
+  isLength: {
+    options: { max: MAX_COMMENT_LENGTH },
+    errorMessage: `${field} cannot be longer than ${MAX_COMMENT_LENGTH} characters.`,
+  },
+});
+
 module.exports = {
   phoneValidation,
   emailValidation,
   firstNameValidation,
   lastNameValidation,
   validateIdChain,
+  promoCodeValidation,
+  commentValidation,
 };

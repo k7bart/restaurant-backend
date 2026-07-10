@@ -1,5 +1,5 @@
 const {
-  lengths: { MAX_ADDITIONAL_REQUIREMENTS_LENGTH, MAX_GUESTS },
+  lengths: { MAX_GUESTS },
 } = require("../../consts/validation");
 const { FIELD_IS_NOT_OF_PROPER_FORMAT } = require("../../consts/errors");
 const {
@@ -7,6 +7,7 @@ const {
   firstNameValidation,
   lastNameValidation,
   emailValidation,
+  commentValidation,
 } = require("../../utils/validationChains");
 
 const createReservationSchema = {
@@ -45,16 +46,7 @@ const createReservationSchema = {
   "reservedBy.lastName": lastNameValidation("reservedBy.lastName"),
   "reservedBy.phone": phoneValidation("reservedBy.phone"),
   "reservedBy.email": emailValidation("reservedBy.email"),
-  additionalRequirements: {
-    in: ["body"],
-    optional: { options: { values: "falsy" } },
-    isString: true,
-    trim: true,
-    isLength: {
-      options: { max: MAX_ADDITIONAL_REQUIREMENTS_LENGTH },
-      errorMessage: `Additional requirements cannot be longer than ${MAX_ADDITIONAL_REQUIREMENTS_LENGTH} characters.`,
-    },
-  },
+  additionalRequirements: commentValidation("additionalRequirements"),
 };
 
 module.exports = {
